@@ -20,6 +20,16 @@ router.post("/hello",function(req,response)  {
 })
 
 
+router.post("/didIt",function(req,response)  {
+
+
+    Users.findAll()
+    .then((user) =>response.send(user))
+    .catch((error)=> console.log(console.error()));
+
+})
+
+
 router.post("/save",function(req,response)  {
 
 
