@@ -4,7 +4,7 @@ login = {};
 
 const client = require("../config/db")
 const Users = require("../models/Users")
-const Op = require('Sequelize').Op;
+const Op = client.Op;
 const express = require('express');  
 const router = express.Router();
 
