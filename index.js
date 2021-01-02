@@ -21,12 +21,12 @@ app.use("/login",login)
 
 
 
- 
 
-app.set("port",(process.env.PORT || 5000))
-// app.listen( (process.env.PORT || 5000) , () => {
-//   console.log(`connected to Port`);
-// })
+
+
+app.listen( (process.env.PORT || 5000) , () => {
+  console.log(`connected to Port`);
+})
 
 
 
