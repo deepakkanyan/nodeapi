@@ -4,20 +4,70 @@ login = {};
 
 const client = require("../config/db")
 const Users = require("../models/Users")
-//const fin = use.User();
+const Op = require('Sequelize').Op;
 const express = require('express');  
 const router = express.Router();
 
 
 
-router.post("/hello",function(req,response)  {
 
+/*
+verifyPhoneNumber
+@param  phonenumber
+*/
 
-     Users.findAll()
-     .then((user) =>response.send(user))
-     .catch((error)=> console.log(console.error()));
+router.post("/verifyPhoneNumber", async function(req,response) {
 
+    var number = req.query.phonenumber;
+    var otp = Math.floor(1000 + Math.random() * 9999);
+
+    if(number == null){response.send(null)}
+
+    var isAlready = await Users.findOne({ where : { phonenumber : number} })
+
+     if(isAlready == null){
+
+     var isInserted =  await Users.create({  phonenumber : number, otp: otp })
+     return  response.send(`New User ${isInserted}`)
+     }else{
+
+      var isUpdated =  await Users.update({otp: otp}, { where : { phonenumber : number} })
+     return  response.send(`old User ${isUpdated}`)
+
+     }
 })
+
+
+/*
+ verifyOTP
+ @params {otp,phonenumber}
+*/
+router.post("/verifyOTP", async function(req,response) {
+
+    var number = req.query.phonenumber;
+    var otp = req.query.otp;
+
+    if(number == null || otp == null){response.send(null)}
+
+    var isAlready = await Users.findOne({ where : { 
+        phonenumber : number, 
+        otp : {
+            [Op.or]: [otp]
+          }
+    
+    } })
+
+    console.log(isAlready)
+
+     if(isAlready == null){
+      return  response.send(`{"success": 'false'}`)
+     }else{
+     return  response.send(isAlready)
+
+     }
+})
+
+
 
 
 router.post("/didIt",function(req,response)  {
@@ -82,149 +132,6 @@ module.exports = router
 
 
 
-
-// /* Verify phone number */
-
-// login.verifyPhone = async (request, response)=>{
-
-// const {phoneNumber} = request.query
-
-
-// client.query(`SELECT COUNT(*) from users WHERE phonenumber = '${phoneNumber}'`,(error, results) => {
-
-//     var otp = Math.floor(1000 + Math.random() * 9000);
-//     console.log(`count Result ${results}`)
-//     if(results.rows?.length > 0){
-
-//         client.query(`UPDATE users SET otp = '${otp}' WHERE phonenumber = '${phoneNumber}'`, (error,results) => {
-  
-//             console.log(`update Result ${results}`)
-//              if(error){ 
-//                  throw error
-//              }
-
-//              if(results.rowCount>0){
-
-//                 response.send("send otp successfully")
-
-//              }else{
-//                 response.send("otp not done successfully")
-                 
-//              }
-
-
-
-
-//         })
-
-
-
-
-//     }else{
-
-       
-//          var query = `INSERT INTO users(phonenumber,otp) VALUES ('${phonenumber}','${otp}')` 
-
-//         client.query(query, (error, results) => {
-    
-//             console.log(`insert Result ${results}`)
-    
-//             console.log(results)
-//             if(error){
-//                 throw error
-//             }
-    
-    
-//            if(results.rowCount > 0){
-    
-//              response.send("Successful inserted")
-//             }else{
-//                 response.send("Failed")
-//             }  
-//         })
-
-//     }
-// })}
-
-
-
-
-
-// login.getUsers = async (request, response) => {
-
-//     client.query('SELECT * FROM users', (error, results) => {
-//         if (error) {
-//           throw error
-//         }
-//         client.end()
-//         response.status(200).json(results.rows)
-//       }) 
-
-
-// }    
-
-
-// login.getUserID = async (request, response) => {
-
-//     const { userID, isActive } = request.query
-    
-//     client.query('SELECT * FROM users Where userid = '+userID, (error, results) => {
-
-//         response.send(response.status(200).json(results.rows))
-//     }) 
-
-
-// }
-
-
-
-// login.getGame = async (request, response) => {
-
-//     const { email } = request.query
-    
-    
-    
-//     client.query("SELECT * FROM users WHERE email = '"+email+"'", (error, results) => {
-
-//          console.log(error,results)
-       
-//         if(results?.rows == null || results?.rows.length == 0 ){
-//             response.send("No Data found")
-//         }else{
-//             response.send(JSON.stringify(results.rows))
-//         }
-        
-        
-       
-//     }) 
-
-    
-
-
-
-// }
-
-
-
-
-
-
-// login.saveGame = async (request, response) => {
-// const {email,game} = request.query
-// const qu = "INSERT INTO sports (email,game) VALUES ('"+email+"','"+game+"')";
-// console.log(qu)
-// client.query( qu, (error,results) => {
-
-//     console.log(error,results)
-//      response.send(error)
-//      client.end()
-
-// })
-
-
-
-
-// }
 
 
 
