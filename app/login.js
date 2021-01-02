@@ -5,12 +5,8 @@ login = {};
 const client = require("../config/db")
 const Users = require("../models/Users")
 const Op = require('Sequelize').Op;
-const express = require('express');  
+const express = require('express');
 const router = express.Router();
-
-
-
-
 
 
 
@@ -21,17 +17,11 @@ verifyPhoneNumber
 
 router.post("/verifyPhoneNumber", async function(req,response) {
 
-     
-
- 
-
     var number = req.body.phoneNumber;
     if(number==null){
 
         return response.json({'success': false,'message':'invalid phone number'})
     } 
-
-
 
     var otp = Math.floor(1000 + Math.random() * 9999);
 
@@ -39,9 +29,6 @@ router.post("/verifyPhoneNumber", async function(req,response) {
 
     var userInfo = await Users.findOne({ where : { phonenumber : number} })
       
-
-   
-
      if(userInfo == null){
 
      var isInserted =  await Users.create({  phonenumber : number, otp: otp })
@@ -75,8 +62,6 @@ router.post("/verifyOTP", async function(req,response) {
         phonenumber : number, 
         otp : { [Op.or]: [otp]}}})
 
-  
-
      if(isAlready == null){
       return  response.json({'success': false,'message':'OTP not match'})
      }else{
@@ -93,6 +78,7 @@ router.post("/didIt",function(req,response)  {
 
     Users.findAll()
     .then((user) =>response.send(user))
+    
     .catch((error)=> console.log(console.error()));
 
 })
