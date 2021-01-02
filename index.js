@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-const port = process.env.port || 5000;
 const bodyParser = require('body-parser')
  
 
@@ -24,7 +23,7 @@ app.use("/login",login)
 
 
 
-app.listen(port, () => {
+app.listen( (process.env.port || 5000) , () => {
   console.log(`connected to Port`);
 })
 
