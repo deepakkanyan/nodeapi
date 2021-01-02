@@ -18,26 +18,32 @@ verifyPhoneNumber
 
 router.post("/verifyPhoneNumber", async function(req,response) {
 
+     
+
     var number = req.query.phonenumber;
     var otp = Math.floor(1000 + Math.random() * 9999);
 
     if(number == null){response.send(null)}
 
-    var isAlready = await Users.findOne({ where : { phonenumber : number} })
+    var userInfo = await Users.findOne({ where : { phonenumber : number} })
+      
 
-     if(isAlready == null){
+   
+
+     if(userInfo == null){
 
      var isInserted =  await Users.create({  phonenumber : number, otp: otp })
-     return  response.send(`{"success" : true, "message":"Otp has been sent to ${number}",
-                "newUser":true}`)
+     return  response.json({'success' : true, 'message':`Otp ${otp} has been sent to ${number}`,
+                'newUser':true})
      }else{
 
       var isUpdated =  await Users.update({otp: otp}, { where : { phonenumber : number} })
-     return  response.send(`{"success" : true, "message":"Otp has been sent to ${number}",
-     "newUser":false, "user" : ${isUpdated}}`)
+     
+      return  response.json({'success' : true, 'message':`Otp ${otp} has been sent to ${number}`,
+     'newUser':false, 'user' : userInfo.dataValues})
 
      }
-})
+}) 
 
 
 /*
