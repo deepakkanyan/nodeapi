@@ -1,9 +1,0 @@
-
-profile = {}
-
-
-
-
-
-
-module.exports = profile
