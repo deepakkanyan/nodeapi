@@ -28,11 +28,13 @@ router.post("/verifyPhoneNumber", async function(req,response) {
      if(isAlready == null){
 
      var isInserted =  await Users.create({  phonenumber : number, otp: otp })
-     return  response.send(`New User ${isInserted}`)
+     return  response.send(`{"success" : true, "message":"Otp has been sent to ${number}",
+                "newUser":true}`)
      }else{
 
       var isUpdated =  await Users.update({otp: otp}, { where : { phonenumber : number} })
-     return  response.send(`old User ${isUpdated}`)
+     return  response.send(`{"success" : true, "message":"Otp has been sent to ${number}",
+     "newUser":false}, "user" : ${isUpdated}`)
 
      }
 })
