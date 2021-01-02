@@ -5,8 +5,13 @@ login = {};
 const client = require("../config/db")
 const Users = require("../models/Users")
 const Op = client.Op;
+
 const express = require('express');  
+
 const router = express.Router();
+
+
+
 
 
 
@@ -20,7 +25,16 @@ router.post("/verifyPhoneNumber", async function(req,response) {
 
      
 
-    var number = req.query.phonenumber;
+ 
+
+    var number = req.body.phoneNumber;
+    if(number==null){
+
+        return response.json({'success': false,'message':'invalid phone number'})
+    } 
+
+
+
     var otp = Math.floor(1000 + Math.random() * 9999);
 
     if(number == null){response.send(null)}
