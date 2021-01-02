@@ -4,7 +4,7 @@ login = {};
 
 const client = require("../config/db")
 const Users = require("../models/Users")
-const Op = client.Op;
+const Op = require('Sequelize').Op;
 
 const express = require('express');  
 
@@ -75,18 +75,14 @@ router.post("/verifyOTP", async function(req,response) {
 
     var isAlready = await Users.findOne({ where : { 
         phonenumber : number, 
-        otp : {
-            [Op.or]: [otp]
-          }
-    
-    } })
+        otp : { [Op.or]: [otp]}}})
 
   
 
      if(isAlready == null){
       return  response.json({'success': false,'message':'OTP not match'})
      }else{
-     return  response.json({'success': false,'message':'OTP matched successfully', 'data':isAlready.dataValues})
+     return  response.json({'success': true,'message':'OTP matched successfully', 'data':isAlready.dataValues})
 
      }
 })
