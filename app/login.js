@@ -58,8 +58,7 @@ router.post("/verifyOTP", async function(req,response) {
     }
 
     var isAlready = await Users.findOne({ where : { 
-        phonenumber : number, 
-        otp : { [client.Op.or]: [otp]}}})
+        phonenumber : number}})
 
      if(isAlready == null){
       return  response.json({'success': false,'message':'OTP not match'})
