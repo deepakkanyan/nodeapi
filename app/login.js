@@ -18,7 +18,7 @@ const router = express.Router();
 
 /*
 verifyPhoneNumber
-@param  phonenumber
+@param  phoneNumber
 */
 
 router.post("/verifyPhoneNumber", async function(req,response) {
@@ -62,14 +62,16 @@ router.post("/verifyPhoneNumber", async function(req,response) {
 
 /*
  verifyOTP
- @params {otp,phonenumber}
+ @params {otp,phoneNumber}
 */
 router.post("/verifyOTP", async function(req,response) {
 
-    var number = req.query.phonenumber;
-    var otp = req.query.otp;
+    var number = req.body.phoneNumber;
+    var otp = req.body.otp;
 
-    if(number == null || otp == null){response.send(null)}
+    if(number == null || otp == null){
+        return response.json({'success': false,'message':'invalid phone number or OTP'})
+    }
 
     var isAlready = await Users.findOne({ where : { 
         phonenumber : number, 
@@ -79,12 +81,12 @@ router.post("/verifyOTP", async function(req,response) {
     
     } })
 
-    console.log(isAlready)
+  
 
      if(isAlready == null){
-      return  response.send(`{"success": 'false'}`)
+      return  response.json({'success': false,'message':'OTP not match'})
      }else{
-     return  response.send(isAlready)
+     return  response.json({'success': false,'message':'OTP matched successfully', 'data':isAlready.dataValues})
 
      }
 })
