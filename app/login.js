@@ -22,7 +22,7 @@ router.post("/verifyPhoneNumber", async function(req,response) {
         return response.json({'success': false,'message':'invalid phone number'})
     } 
 
-    var otp = Math.floor(1000 + Math.random() * 9999);
+    var otp = Math.floor(1000 + Math.random() * 9000);
 
     if(number == null){response.send(null)}
 
