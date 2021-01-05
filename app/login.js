@@ -5,6 +5,7 @@ login = {};
 const client = require("../config/db")
 const Users = require("../models/Users")
 const express = require('express');
+const { request, response } = require("express");
 const router = express.Router();
 
 
@@ -24,7 +25,6 @@ router.post("/verifyPhoneNumber", async function(req,response) {
 
     var otp = Math.floor(1000 + Math.random() * 9000);
 
-    if(number == null){response.send(null)}
 
     var userInfo = await Users.findOne({ where : { phonenumber : number} })
       
@@ -71,63 +71,17 @@ router.post("/verifyOTP", async function(req,response) {
 
 
 
-
-router.post("/didIt",function(req,response)  {
-
-
-    Users.findAll()
-    .then((user) =>response.send(user))
-    
-    .catch((error)=> console.log(console.error()));
-
-})
+router.post("/uploadImage",function(request,response){
 
 
-router.post("/save",function(req,response)  {
+    console.log(request)
 
+    response.json({"upload":request})
 
-    Users.create({
-         phonenumber : req.query.phonenumber,
-         email : req.query.email,
-        })
-    .then((done) => { response.send("Sucess")})
-    .catch((error) => console.log(error))
-     
-
-})
-
-
-router.delete("/deleteUser",function(req,response){
-
-    Users.destroy({
-        where : { phonenumber : req.query.phonenumber} 
-        
-    }).then((done)=>{
-
-        response.send("Deleted")
-    })
 
 
 })
 
-
-router.put("/updateUser",function(request,response){
-
-   
-    Users.update(
-        
-        {email : request.query.email},
-        { where : { phonenumber : request.query.phonenumber} }, 
-
-
-    ).then((done)=>{
-        response.send("Updated")
-    })
-
-    
-
-
-})
 
 
 module.exports = login
