@@ -74,7 +74,7 @@ router.post("/verifyOTP", async function(req,response) {
 router.post("/uploadImage",function(request,response){
 
 
-    console.log(request)
+    console.log(request.f)
 
     response.json({"upload":request})
 
