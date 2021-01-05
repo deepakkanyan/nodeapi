@@ -76,7 +76,7 @@ router.post("/uploadImage",function(request,response){
 
     console.log(request.f)
 
-    response.json({"upload":request})
+   return response.json({"upload":request})
 
 
 
