@@ -8,16 +8,23 @@ const bodyParser = require('body-parser')
 const app = express()  
 app.use(bodyParser.json()) 
 app.use(bodyParser.raw());
+app.use('/uploads',express.static('uploads'))
 app.use(bodyParser.urlencoded({extended: true}))
-const login = require('./app/login');
-const db = require('./app/Db');
+
+const db      = require('./app/Db');
+const login   = require('./app/login');
+const profile = require('./profile/profiles');
+
 
 
 
 
 
 /*this is test comment*/
-app.use("/login",login)  
+app.use("/login",login) 
+
+app.use("/profiles",profile)  
+
 
 
 

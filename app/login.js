@@ -3,21 +3,34 @@ login = {};
 
 
 const client = require("../config/db")
+const msg = require("../config/MyResponse")
+
+
 const Users = require("../models/Users")
-const express = require('express');
-const { request, response } = require("express");
+
+const express = require('express'); 
+
 const router = express.Router();
+const multer = require("multer"); 
+
+const storage = multer.diskStorage({  
+    destination : function(req,file,cb){  cb(null,'./uploads/')
+    },
+     filename : function(req,file,cb){ cb(null, new Date().toISOString()+file.originalname)
+ }
+})
+const uploads = multer({storage : storage})
 
 
 
 /*
 verifyPhoneNumber
-@param  phoneNumber
+@param  phonenumber
 */
 
 router.post("/verifyPhoneNumber", async function(req,response) {
 
-    var number = req.body.phoneNumber;
+    var number = req.body.phonenumber;
     if(number==null){
 
         return response.json({'success': false,'message':'invalid phone number'})
@@ -46,12 +59,12 @@ router.post("/verifyPhoneNumber", async function(req,response) {
 
 /*
  verifyOTP
- @params {otp,phoneNumber}
+ @params {otp,phonenumber}
 */
 
 router.post("/verifyOTP", async function(req,response) {
 
-    var number = req.body.phoneNumber;
+    var number = req.body.phonenumber;
     var otp = req.body.otp;
 
     if(number == null || otp == null){
@@ -62,26 +75,20 @@ router.post("/verifyOTP", async function(req,response) {
         phonenumber : number,  otp : otp}})
 
      if(isAlready == null){
+
       return  response.json({'success': false,'message':'OTP not match'})
      }else{
-     return  response.json({'success': true,'message':'OTP matched successfully', 'data':isAlready.dataValues})
+     await Users.update({isverified: true}, { where : { phonenumber : number} })
+     isAlready.dataValues.isverified = true
+     return  response.json({'success': true,'message':'OTP matched successfully', 'data': isAlready.dataValues })
 
      }
 })
 
 
 
-router.post("/uploadImage",function(request,response){
 
-
-    console.log(request.f)
-
-   return response.json({"upload":request})
-
-
-
-})
-
+ 
 
 
 module.exports = login
