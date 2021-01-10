@@ -44,7 +44,7 @@ router.post("/updateProfile" ,uploads.single("image"), async function(request,re
     //console.log(request.file.path)
     var userUpdate = await Users.update({
         username : body.username,
-        profilepicture : request.file?.path,
+       // profilepicture : request.file?.path,
         email :  body.email,
         height : body.height,
         fname : body.fname,
@@ -130,14 +130,15 @@ Get all users list by pagination
 router.post("/getUsers",async function(request,response){
 
     var totalRecord = 8
-    var offset = request.body.page * totalRecord
+    var offset = request.body.page * totalRecord 
+
 
     var users = await Users.findAll({
         limit : totalRecord,
         offset : offset - totalRecord })
 
      if(users.length == 0){
-        return response.json({'Success':false,'message':' no data found' })
+        return response.json({'Success':false,'message':' no data found.' })
 
      }   else{
         return response.json({'Success':true,'message':'Data found','users': users })
