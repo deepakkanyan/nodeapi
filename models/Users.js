@@ -11,7 +11,7 @@ var Users =  db.define('users', {
     otp : {type :Sequelize.STRING},
     work:  {type :Sequelize.STRING},
     fname:  {type :Sequelize.STRING},
-    fwork:  {type :Sequelize.STRING},
+    fwork:  {type :Sequelize.STRING}, 
    fnumber:  {type :Sequelize.STRING},
     got:  {type :Sequelize.STRING},
    mgot:  {type :Sequelize.STRING},
@@ -21,7 +21,9 @@ var Users =  db.define('users', {
    profilepicture :  {type :Sequelize.STRING},
    village :  {type :Sequelize.STRING},
    district :  {type :Sequelize.STRING},
-   education :  {type :Sequelize.STRING}
+   education :  {type :Sequelize.STRING},
+   land :  {type :Sequelize.STRING},
+   state :  {type :Sequelize.STRING}
   })
 
     
