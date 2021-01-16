@@ -44,8 +44,9 @@ router.post("/verifyPhoneNumber", async function(req,response) {
      if(userInfo == null){
 
      var isInserted =  await Users.create({  phonenumber : number, otp: otp })
+     var userInfo = await Users.findOne({ where : { phonenumber : number} })
      return  response.json({'success' : true, 'message':`Otp ${otp} has been sent to ${number}`,
-                'newUser':true})
+                'newUser':true,'user' : userInfo.dataValues})
      }else{
 
       var isUpdated =  await Users.update({otp: otp}, { where : { phonenumber : number} })
