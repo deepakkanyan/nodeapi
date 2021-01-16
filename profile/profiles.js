@@ -9,6 +9,8 @@ const Users = require("../models/Users")
 
 const myResponse = require("../config/MyResponse")
 
+const { Op } = require("sequelize");
+
 const multer = require("multer")
 
 const storage = multer.diskStorage({
@@ -89,7 +91,6 @@ router.post("/saveProfile" , async function(request,response) {
         got      : body.got,
         education : body.education,
         work     : body.work,
-    
         fname    :  body.fname,
         fnumber  : body.fnumber,
         fwork    : body.fwork,
@@ -99,7 +100,7 @@ router.post("/saveProfile" , async function(request,response) {
         village  : body.village,
         district : body.district
     
-    }, { where : { phonenumber : phone} })
+    }, { where : { phonenumber : phone, } })
 
      //  
 
@@ -134,8 +135,13 @@ router.post("/getUsers",async function(request,response){
 
 
     var users = await Users.findAll({
-        limit : totalRecord,
-        offset : offset - totalRecord })
+        limit : totalRecord, 
+        offset : offset - totalRecord ,
+         where : {username : { 
+            [Op.ne] : null
+
+         }}
+    })
 
      if(users.length == 0){
         return response.json({'Success':false,'message':' no data found.' })

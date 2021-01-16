@@ -48,9 +48,9 @@ router.post("/verifyPhoneNumber", async function(req,response) {
      return  response.json({'success' : true, 'message':`Otp ${otp} has been sent to ${number}`,
                 'newUser':true,'user' : userInfo.dataValues})
      }else{
-
+     userInfo.otp = otp
       var isUpdated =  await Users.update({otp: otp}, { where : { phonenumber : number} })
-      userInfo.otp = otp
+      
       return  response.json({'success' : true, 'message':`Otp ${otp} has been sent to ${number}`,
      'newUser':false, 'user' : userInfo.dataValues})
 
