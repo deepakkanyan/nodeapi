@@ -118,8 +118,8 @@ router.post("/profileInfo", async function(request,response){
     var phone = request.body.phonenumber
      
     var userInfo = await Users.findOne({ where : { phonenumber : phone, isverified : true} })
-   
-    if(users.length == 0){
+    // console.log(userInfo)
+    if(userInfo == null){
         return response.json({'Success':false,'message':' no data found.' })
 
      }   else{
