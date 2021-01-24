@@ -108,17 +108,24 @@ router.post("/saveProfile" , async function(request,response) {
       return response.json({'success': true,'user':user.dataValues})  
 
 
-})
+}) 
 
 
 
 /*get single profile info*/
 router.post("/profileInfo", async function(request,response){
 
-    var phone = request.body.phoneNumber
+    var phone = request.body.phonenumber
      
     var userInfo = await Users.findOne({ where : { phonenumber : number, isVerified : true} })
-    return myResponse.response(true,'done',userInfo.dataValues)
+   
+    if(users.length == 0){
+        return response.json({'Success':false,'message':' no data found.' })
+
+     }   else{
+        return response.json({'Success':true,'message':'Data found','users': userInfo.dataValues })
+
+     }
 
 
 })
