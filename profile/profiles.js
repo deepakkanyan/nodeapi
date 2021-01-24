@@ -113,7 +113,7 @@ router.post("/saveProfile" , async function(request,response) {
 
 
 /*get single profile info*/
-router.get("/profileInfo", async function(request,response){
+router.post("/profileInfo", async function(request,response){
 
     var phone = request.body.phoneNumber
      
